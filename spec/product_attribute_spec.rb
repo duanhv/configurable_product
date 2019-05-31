@@ -2,7 +2,6 @@ require "product_attribute"
 require "product"
 require "attribute"
 require "attribute_value"
-require "pry"
 
 describe ProductAttribute do
   describe ".create" do
@@ -10,7 +9,7 @@ describe ProductAttribute do
     # attribute data for test
     let(:attr_names) {["sale_price", "market_price", "color", "storage", "description", "origin", "factory_date", "images", "default_image"] }
     let(:attr_value1) {[999, 1099, "Black", 64, "description1", true, Time.new(2018,1,1), ["a1.jpg", "a2.jpg", "a3.jpg"], "a1.jpg"] }
-    let(:attr_value2) {[950, 1050, "Yellow", 128, "description2", true, Time.new(2018,2,2), ["b1.jpg", "b2.jpg", "b3.jpg"], "b1.jpg"] }
+    let(:attr_value2) {[950, 1050, "Yellow", 128, "description2", true, Time.new(2018,2,2), ["b1.jpg", "b2.jpg", "b3.jpg"], "b1.jpg"]}
 
     # prepare attirbutes
     let(:attributes) do
@@ -37,15 +36,13 @@ describe ProductAttribute do
       attribute_value_2.each_with_index.map { |attr_value, index| ProductAttribute.new(index, product2.id, attr_value.attribute_id, attr_value.id ).create! }
     end
 
-
     context "when data valid" do
       before do
         product1.product_attributes = product_attributes_1
         product2.product_attributes = product_attributes_2
       end
       subject { Product.configure(3, "Iphone X", [product1, product2]).product_attributes.size }
-      it { is_expected.to eq 18 }
+      it { is_expected.to eq 18 } # configurable product has 18 attributes (combine product1 and product2)
     end
-    
-  end
+  end 
 end
