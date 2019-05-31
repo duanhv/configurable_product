@@ -7,9 +7,9 @@ describe ProductAttribute do
   describe ".create" do
 
     # attribute data for test
-    let(:attr_names) {["sale_price", "market_price", "color", "storage", "description", "origin", "factory_date", "images", "default_image"] }
-    let(:attr_value1) {[999, 1099, "Black", 64, "description1", true, Time.new(2018,1,1), ["a1.jpg", "a2.jpg", "a3.jpg"], "a1.jpg"] }
-    let(:attr_value2) {[950, 1050, "Yellow", 128, "description2", true, Time.new(2018,2,2), ["b1.jpg", "b2.jpg", "b3.jpg"], "b1.jpg"]}
+    let(:attr_names) {["sale_price", "market_price", "color", "storage", "description", "origin", "factory_date", "images", "default_image", "weight"] }
+    let(:attr_value1) {[999, 1099, "Black", 64, "description1", true, Time.new(2018,1,1), ["a1.jpg", "a2.jpg", "a3.jpg"], "a1.jpg", 0.11] }
+    let(:attr_value2) {[950, 1050, "Yellow", 128, "description2", true, Time.new(2018,2,2), ["b1.jpg", "b2.jpg", "b3.jpg"], "b1.jpg", 0.12] }
 
     # prepare attirbutes
     let(:attributes) do
@@ -21,7 +21,7 @@ describe ProductAttribute do
       attr_names.each_with_index.map { |attr, index| AttributeValue.new(index, index, attr_value1[index], index).create! }
     end
     let(:attribute_value_2) do
-      attr_names.each_with_index.map { |attr, index| AttributeValue.new(index + 9, index, attr_value2[index], index).create! }
+      attr_names.each_with_index.map { |attr, index| AttributeValue.new(index + 10, index, attr_value2[index], index).create! }
     end
 
     # create products 
@@ -41,8 +41,10 @@ describe ProductAttribute do
         product1.product_attributes = product_attributes_1
         product2.product_attributes = product_attributes_2
       end
-      subject { Product.configure(3, "Iphone X", [product1, product2]).product_attributes.size }
-      it { is_expected.to eq 18 } # configurable product has 18 attributes (combine product1 and product2)
+ 
+      let(:configurable_product) { Product.configure(3, "Iphone X", [product1, product2]) }
+      subject { configurable_product.product_attributes.size }
+      it { is_expected.to eq 20 } # configurable product has 20 attributes (combine product1 and product2)
     end
   end 
 end

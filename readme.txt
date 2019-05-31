@@ -19,4 +19,4 @@
       bundle install
 
    3. run rspec:
-      bundle exec rspec
+      bundle exec rspec  (or just: rpsec)
